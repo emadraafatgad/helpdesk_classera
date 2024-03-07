@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_student_feesproduct_pricelist_main"
+                name="Fees Pricelists"
+                action="product.product_pricelist_action2"
+                groups="product.group_product_pricelist"
+                  parent="school_management.menu_school_fees_plan_rules"
+                sequence="30"/>
+        <record id="view_school_fees_structure_form" model="ir.ui.view">
+            <field name="name">school.fees.structure.form</field>
+            <field name="model">school.fees.structure</field>
+            <field name="arch" type="xml">
+                <form string="Fees Structure">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="academic_year_id" />
+                            </group>
+                            <group>
+                                <field name="branch_id"/>
+                                <field name="level_id"/>
+                                <field name="company_id" invisible="0" readonly="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Rules">
+                                <field name="fees_items">
+                                    <tree>
+                                        <field name="name"/>
+<!--                                        <field name="lst_price"/>-->
+                                        <field name="categ_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <!-- Chatter -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_school_fees_structure_list" model="ir.ui.view">
+            <field name="name">school.fees.structure.list</field>
+            <field name="model">school.fees.structure</field>
+            <field name="arch" type="xml">
+                <tree create="1" delete="1" multi_edit="1" string="Fees Structure">
+                    <field name="name"/>
+                    <field name="branch_id"/>
+                    <field name="level_id"/>
+                    <field name="academic_year_id" />
+                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_school_fees_structure_search" model="ir.ui.view">
+            <field name="name">school.fees.structure.search</field>
+            <field name="model">school.fees.structure</field>
+            <field name="arch" type="xml">
+                <search string="Fees Structure">
+                    <field name="name" filter_domain="[('name','ilike',self)]"
+                           string="Structure"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_school_fees_structure_form" model="ir.actions.act_window">
+            <field name="name">Fees Structure</field>
+            <field name="res_model">school.fees.structure</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_school_fees_structure_search"/>
+            <field name="view_id" ref="view_school_fees_structure_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new School Fees Structure
+                </p>
+                <p>
+                    An School Fees Structure if base of all modules .to disclose a certain amount of information.
+                </p>
+            </field>
+        </record>
+
+<!--        <menuitem name="Fees Rules" id="menu_school_fees_structure_rules" sequence="50"-->
+<!--                  parent="school_management.school_management_root"/>-->
+
+        <menuitem name="Fees Structure" action="action_school_fees_structure_form" id="menu_school_fees_structure"
+                  parent="school_management.menu_school_fees_plan_rules"/>
+
+
+
+    </data>
+</odoo>

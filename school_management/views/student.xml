@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_partner_student_form" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form string="Partners">
+                    <sheet>
+                        <div name="button_box" position="inside">
+                            <button type="object" class="oe_stat_button" icon="fa-pencil-square-o"
+                                    name="action_view_partner_invoices"
+                                    groups="account.group_account_invoice,account.group_account_readonly"
+                                    context="{'default_partner_id': active_id}">
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="total_invoiced" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"/>
+                                    </span>
+                                    <span class="o_stat_text">Invoiced</span>
+                                </div>
+                            </button>
+                            <button type="object" class="oe_stat_button" icon="fa-pencil-square-o"
+                                    name="action_view_student_advanced"
+                                    context="{'default_student_id': active_id}">
+                                <div class="o_form_field o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="advanced_amount" widget="monetary"
+                                               options="{'currency_field': 'currency_id'}"/>
+                                    </span>
+                                    <span class="o_stat_text">Advanced</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="oe_button_box" name="button_box"/>
+                        <field name="avatar_128" invisible="1"/>
+                        <field name="image_1920" widget='image' class="oe_avatar"
+                               options='{"preview_image": "avatar_128"}'/>
+                        <div class="oe_title mb24">
+                            <h1>
+                                <field id="student" class="text-break" name="name" default_focus="1"
+                                       placeholder="e.g. عماد"/>
+                                <field id="e_student" class="text-break" name="english_name"
+                                       placeholder="e.g. Emad"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group string="Educational Info">
+                                <group>
+                                    <field name="academic_year_id" required="1"/>
+                                    <field name="stage_id" required="1"/>
+                                    <field name="level_id" required="1"/>
+                                    <field name="class_id"/>
+                                    <field name="subject_id"/>
+                                </group>
+                                <group>
+                                    <field name="property_product_pricelist"/>
+                                    <field name="fees_plan_id"/>
+                                    <field name="discount_ids" widget="many2many_tags"/>
+                                    <field name="student_sequence_id"/>
+                                </group>
+                            </group>
+                            <group string="Student Info">
+                                <field name="phone" widget="phone"/>
+                                <field name="mobile" widget="phone"/>
+                                <field name="email" widget="email" context="{'gravatar_image': True}"/>
+                                <field name="lang"/>
+                                <field name="category_id" widget="many2many_tags"
+                                       options="{'color_field': 'color', 'no_create_edit': True}"
+                                       placeholder='e.g. "Student", "Brother", ...'/>
+                            </group>
+                            <group string="Other Info">
+                                <field name="national_id_iqama"/>
+                                <field name="date_of_birth"/>
+                                <field name="birth_place"/>
+                                <field name="passport_number"/>
+                                <field name="gender"/>
+                            </group>
+                            <group string="Family Info">
+                                <field name="guardian_id"/>
+                                <field name="father_national_id_iqama"/>
+                                <field name="father_nationality"/>
+                                <field name="father_phone"/>
+                                <field name="father_email"/>
+                            </group>
+                            <group string="Address">
+                                <span class="o_form_label o_td_label" name="address_name">
+                                    <b>Address</b>
+                                </span>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State"
+                                           options="{'no_open': True, 'no_quick_create': True}"
+                                           context="{'country_id': country_id, 'default_country_id': country_id, 'zip': zip}"/>
+                                    <field name="zip" placeholder="ZIP" class="o_address_zip"/>
+                                    <div name="partner_address_country" class="d-flex justify-content-between">
+                                        <field name="country_id" string="nationality" placeholder="Nationality"
+                                               class="o_address_country"
+                                               options='{"no_open": True, "no_create": True}'/>
+                                    </div>
+                                </div>
+                            </group>
+                        </group>
+                        <notebook colspan="4">
+
+                            <page name='internal_notes' string="Internal Notes">
+                                <group>
+                                    <field name="is_student"/>
+                                    <field name="is_guardian"/>
+
+                                </group>
+                                <group groups="account.group_account_invoice,account.group_account_readonly">
+                                    <group groups="account.group_warning_account" col="2">
+                                        <separator string="Warning on the Invoice" colspan="2"/>
+                                        <field name="invoice_warn" nolabel="1" colspan="2" required="1"/>
+                                        <field name="invoice_warn_msg" placeholder="Type a message..." colspan="2"
+                                               nolabel="1"
+                                               attrs="{'required':[('invoice_warn','!=', False), ('invoice_warn','!=','no-message')], 'invisible':[('invoice_warn','in',(False,'no-message'))]}"/>
+                                    </group>
+                                </group>
+                                <field name="comment" placeholder="Internal notes..."/>
+                            </page>
+
+
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="activity_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_partner_student_tree" model="ir.ui.view">
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Contacts" sample="1" multi_edit="1">
+                    <field name="display_name" string="Name"/>
+                    <field name="guardian_id" invisible="0" readonly="1"/>
+                    <field name="academic_year_id"/>
+                    <field name="stage_id"/>
+                    <field name="level_id"/>
+                    <field name="country_id" string="nationality" optional="show" readonly="1"/>
+                    <field name="phone" class="o_force_ltr" optional="show"/>
+                    <field name="email" optional="show"/>
+                    <field name="vat" optional="hide" readonly="1"/>
+                    <field name="company_id" groups="base.group_multi_company" readonly="1"/>
+                    <field name="active" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="res_student_kanban_view">
+            <field name="name">student.kanban</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban" sample="1">
+                    <field name="id"/>
+                    <field name="color"/>
+                    <field name="display_name"/>
+                    <field name="academic_year_id"/>
+                    <field name="level_id"/>
+                    <field name="stage_id"/>
+                    <field name="title"/>
+                    <field name="email"/>
+                    <field name="national_id_iqama"/>
+                    <field name="fees_plan_id"/>
+                    <field name="guardian_id"/>
+                    <field name="parent_id"/>
+                    <field name="is_company"/>
+                    <field name="function"/>
+                    <field name="phone"/>
+                    <field name="street"/>
+                    <field name="street2"/>
+                    <field name="zip"/>
+                    <field name="city"/>
+                    <field name="country_id"/>
+                    <field name="mobile"/>
+                    <field name="state_id"/>
+                    <field name="category_id"/>
+                    <field name="avatar_128"/>
+                    <field name="type"/>
+                    <field name="active"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click o_kanban_record_has_image_fill o_res_partner_kanban">
+                                <t t-if="!record.is_company.raw_value">
+                                    <t t-set="background_image"
+                                       t-value="kanban_image('res.partner', 'avatar_128', record.id.raw_value)"/>
+                                    <div class="o_kanban_image_fill_left d-none d-md-block"
+                                         t-attf-style="background-image:url('#{background_image}')">
+                                        <img class="o_kanban_image_inner_pic" t-if="record.parent_id.raw_value"
+                                             t-att-alt="record.parent_id.value"
+                                             t-att-src="kanban_image('res.partner', 'avatar_128', record.parent_id.raw_value)"/>
+                                    </div>
+                                    <div class="o_kanban_image d-md-none"
+                                         t-attf-style="background-image: url(#{background_image})">
+                                        <img class="o_kanban_image_inner_pic" t-if="record.parent_id.raw_value"
+                                             t-att-alt="record.parent_id.value"
+                                             t-att-src="kanban_image('res.partner', 'avatar_128', record.parent_id.raw_value)"/>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="o_kanban_image_fill_left o_kanban_image_full"
+                                         t-attf-style="background-image: url(#{kanban_image('res.partner', 'avatar_128', record.id.raw_value)})"
+                                         role="img"/>
+                                </t>
+                                <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}">
+                                    <span class="bg-danger">Archived</span>
+                                </div>
+                                <div class="oe_kanban_details d-flex flex-column justify-content-between">
+                                    <div>
+                                        <strong class="o_kanban_record_title oe_partner_heading">
+                                            <field name="display_name"/>
+                                        </strong>
+                                        <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                        <ul>
+                                            <li t-if="record.guardian_id.raw_value and !record.function.raw_value">
+                                                <field name="guardian_id"/>
+                                            </li>
+                                            <li t-elif="!record.guardian_id.raw_value and record.function.raw_value">
+                                                <field name="function"/>
+                                            </li>
+                                            <li t-if="record.city.raw_value or record.country_id.raw_value">
+                                                <t t-if="record.city.raw_value">
+                                                    <field name="city"/>
+                                                    <t t-if="record.country_id.raw_value">,</t>
+                                                </t>
+                                                <t t-if="record.country_id.raw_value">
+                                                    <field name="country_id"/>
+                                                </t>
+                                            </li>
+
+                                        </ul>
+                                        <!--                                        <strong t-if="record.level_id.raw_value" class="o_text_overflow">-->
+                                        <!--                                            <field name="level_id"/>-->
+                                        <!--                                        </strong>-->
+                                        <!--                                        <strong t-if="record.stage_id.raw_value" class="o_text_overflow">-->
+                                        <!--                                            <field name="stage_id"/>-->
+                                        <!--                                        </strong>-->
+                                        <!--                                        <strong t-if="record.academic_year_id.raw_value" class="o_text_overflow">-->
+                                        <!--                                            <field name="academic_year_id"/>-->
+                                        <!--                                        </strong>-->
+                                        <!--                                        <strong t-if="record.national_id_iqama.raw_value" class="o_text_overflow">-->
+                                        <!--                                            <field name="national_id_iqama"/>-->
+                                        <!--                                        </strong>-->
+                                        <strong t-if="record.phone.raw_value" class="o_text_overflow">
+                                            <field name="phone"/>
+                                        </strong>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <span>
+                                                <field name="academic_year_id"/>
+                                            </span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span>
+                                                <field name="national_id_iqama" invisible="0"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <span>
+                                                <field name="level_id"/>
+                                            </span>
+                                        </div>
+                                        <div class="col-6">
+                                            <span>
+                                                <field name="stage_id"/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left"/>
+                                        <div class="oe_kanban_bottom_right"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="action_view_list_customer_student" model="ir.actions.act_window">
+            <field name="name">Student</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('is_student','=',True)]</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('res_student_kanban_view')}),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_partner_student_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_partner_student_form')})]"/>
+            <field name="context">{'default_is_student':1,'default_is_company':0,'default_company_type':'person'}
+            </field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Students
+                </p>
+            </field>
+        </record>
+        <record id="action_view_list_customer_guardian" model="ir.actions.act_window">
+            <field name="name">Guardians</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('is_guardian','=',True)]</field>
+            <field name="context">{'default_is_guardian':1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    guardian
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Profile" id="menu_school_profiling"
+                  parent="school_management.school_management_root"/>
+
+        <menuitem name="Student" action="action_view_list_customer_student" id="menu_student_profile"
+                  parent="school_management.menu_school_profiling"/>
+        <menuitem name="Guardian" action="action_view_list_customer_guardian" id="menu_guardian_profile"
+                  parent="school_management.menu_school_profiling"/>
+
+    </data>
+</odoo>

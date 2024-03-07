@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="student_analysis_report_wizard_view" model="ir.ui.view">
+        <field name="name">student.analysis.report.wizard</field>
+        <field name="model">student.analysis.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+
+                        <group>
+                            <field name="branch_id"/>
+                            <field name="level_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="academic_year_id"/>
+                            <field name="installment_ids" widget="many2many_tags"/>
+                        </group>
+                        <group string="Fees Category">
+                            <field name="fees_group_ids" widget="many2many_tags"/>
+                            <field name="fees_ids" widget="many2many_tags"/>
+                        </group>
+                        <group string="Student ">
+                            <field name="guardian_id"/>
+                            <field name="student_ids" widget="many2many_tags"/>
+                        </group>
+                        <group string="Options">
+                            <field name="summary_only"/>
+                        </group>
+                        <group string="Options">
+                            <field name="remaining_only"/>
+                        </group>
+                    </group>
+
+                </sheet>
+                <footer>
+                    <button string='DownLoad Excel' name="print_report_excel" type="object" class="btn-primary"/>
+                    <!--                    <button string='Print PDF' name="print_report_pdf" type="object" class="btn-primary"/>-->
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="school_student_analysis_xls_export" model="ir.actions.report">
+        <field name="name">Student Analysis XLS report</field>
+        <field name="model">student.analysis.report.wizard</field>
+        <field name="type">ir.actions.report</field>
+        <field name="report_name">school_management.student_analysis_xlsx</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_file">school_management.student_analysis_xlsx</field>
+    </record>
+
+    <record id="action_student_analysis_report" model="ir.actions.act_window">
+        <field name="name">Student Analysis Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">student.analysis.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="school_management.student_analysis_report_wizard_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_student_analysis_report"
+              name="Student Analysis" sequence="10"
+              action="action_student_analysis_report"
+              parent="school_management.menu_school_management_reports_root"/>
+</odoo>

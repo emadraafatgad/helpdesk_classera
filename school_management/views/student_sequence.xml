@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <data>
+        <record id="view_student_sequence_form" model="ir.ui.view">
+            <field name="name">student.sequence.form</field>
+            <field name="model">student.sequence</field>
+            <field name="arch" type="xml">
+                <form string="Student Sequence">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="number"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <!-- Chatter -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_student_sequence_list" model="ir.ui.view">
+            <field name="name">student.sequence.list</field>
+            <field name="model">student.sequence</field>
+            <field name="arch" type="xml">
+                <tree editable="top" create="1" delete="1" multi_edit="1" string="Student Sequence">
+                    <field name="name"/>
+                    <field name="number"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_student_sequence_search" model="ir.ui.view">
+            <field name="name">student.sequence.search</field>
+            <field name="model">student.sequence</field>
+            <field name="arch" type="xml">
+                <search string="Student Sequence">
+                    <field name="name" filter_domain="[('name','ilike',self)]"
+                           string="Student Sequence"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_student_sequence_form" model="ir.actions.act_window">
+            <field name="name">Student Sequence</field>
+            <field name="res_model">student.sequence</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_student_sequence_search"/>
+            <field name="view_id" ref="view_student_sequence_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new Student Sequences
+                </p>
+                <p>
+                    A Student Sequence .
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Sequences" id="menu_student_sequence_menuitem" action="action_student_sequence_form"
+                  parent="school_management.school_management_config_root"/>
+
+    </data>
+</odoo>

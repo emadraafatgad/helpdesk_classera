@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- tree view for hr.employee.vcard -->
+    <record id="hr_employee_vcard_tree_view" model="ir.ui.view">
+        <field name="name">hr.employee.vcard.tree</field>
+        <field name="model">hr.employee.vcard</field>
+        <field name="arch" type="xml">
+            <tree string="Employee VCard">
+                <field name="name"/>
+                <field name="employee_id"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- form view for hr.employee.vcard -->
+    <record id="hr_employee_vcard_form_view" model="ir.ui.view">
+        <field name="name">hr.employee.vcard.form</field>
+        <field name="model">hr.employee.vcard</field>
+        <field name="arch" type="xml">
+            <form string="Employee VCard">
+                <sheet>
+                    <group>
+                        <field name="employee_id"/>
+                    </group>
+                    <group>
+                        <group string="ID Front">
+                            <field name="display_name"/>
+                            <field name="vcard_template"/>
+                            <field name="offset"/>
+                            <field name="photo" widget="image" options="{'size': [200, 200]}" nolabel="1"/>
+                            <field name="photo_new" widget="image"  options="{'size': [500, 500]}" nolabel="1" readonly="1" force_save="1"/>
+                            <span/><button name="remove_background_and_resize" string="Remove BG and Resize" type="object" class="oe_highlight"/>
+                        </group>
+                        <group string="ID Back">
+                            <field name="name"/>
+                            <field name="birthday"/>
+                            <field name="blood_type"/>
+                            <field name="id_number"/>
+                            <field name="date_hired"/>
+                            <field name="emergency_contact_person"/>
+                            <field name="emergency_contact_number"/>
+                        </group>
+                    </group>
+                    <group string="VCard Contact Information">
+                        <group>
+                            <field name="first_name"/>
+                            <field name="middle_name"/>
+                            <field name="last_name"/>
+                            <field name="phone_number"/>
+                            <field name="local_number"/>
+                        </group>
+                        <group>
+                            <field name="email"/>
+                            <field name="position"/>
+                            <field name="qr_code" widget="image" options="{'size': [300, 300]}" />
+                            <span/><button name="generate_qr_code" string="Generate QR" type="object" class="oe_highlight"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- action for hr.employee.vcard -->
+    <record id="hr_employee_vcard_action" model="ir.actions.act_window">
+        <field name="name">Employee VCard</field>
+        <field name="res_model">hr.employee.vcard</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    
+    <menuitem id="hr_employee_id_cards_menu" name="ID Cards" parent="hr.menu_hr_root" sequence="10"/>
+    <menuitem id="hr_employee_vcard_menu" name="VCard" action="hr_employee_vcard_action" parent="hr_employee_id_cards_menu" sequence="10"/>
+
+
+    <!-- tree view for hr.employee.vcard.template -->
+    <record id="hr_employee_vcard_template_tree_view" model="ir.ui.view">
+        <field name="name">hr.employee.vcard.template.tree</field>
+        <field name="model">hr.employee.vcard.template</field>
+        <field name="arch" type="xml">
+            <tree string="Employee VCard Template">
+                <field name="name"/>
+                <field name="width"/>
+                <field name="height"/>
+                <field name="offset_y"/>
+                <field name="offset_x"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- form view for hr.employee.vcard.template -->
+    <record id="hr_employee_vcard_template_form_view" model="ir.ui.view">
+        <field name="name">hr.employee.vcard.template.form</field>
+        <field name="model">hr.employee.vcard.template</field>
+        <field name="arch" type="xml">
+            <form string="Employee VCard Template">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="width"/>
+                            <field name="height"/>
+                            <field name="offset_y"/>
+                            <field name="offset_x"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="front_bg" widget="image" options="{'size': [500, 500]}"/>
+                        </group>
+                        <group>
+                            <field name="back_bg" widget="image" options="{'size': [500, 500]}"/>
+                        </group>
+                        <group>
+                            <field name="vcard_bg" widget="image" options="{'size': [500, 500]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- action for hr.employee.vcard.template -->
+    <record id="hr_employee_vcard_template_action" model="ir.actions.act_window">
+        <field name="name">Employee VCard Template</field>
+        <field name="res_model">hr.employee.vcard.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="hr_employee_vcard_template_menu" name="VCard Template" action="hr_employee_vcard_template_action" parent="hr_employee_id_cards_menu" sequence="20"/>
+
+
+
+
+
+</odoo>

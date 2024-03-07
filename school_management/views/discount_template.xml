@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="discount_template_form_view" model="ir.ui.view">
+            <field name="name">discount.template.discount.form</field>
+            <field name="model">discount.template</field>
+            <field name="arch" type="xml">
+                <form string="Discount Categories">
+                    <sheet>
+                        <field name="id" invisible="True"/>
+                        <div class="oe_title">
+                            <label for="name" string="Discount Name"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. discount"/>
+                            </h1>
+                            <div name="discount_name" groups="base.group_user" invisible="0">
+                                <div>
+                                    <label for="discount_category_id"/>
+                                    <field name="discount_category_id"/>
+                                </div>
+                            </div>
+                        </div>
+                        <group name="discount_info">
+                            <group string="Detailes">
+                                <field name="active" invisible="1"/>
+                                <field name="academic_year_id" invisible="0"/>
+                                <field name="level_ids" widget="many2many_tags"/>
+                                <field name="student_sequence_ids" widget="many2many_tags"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group string="Conditions">
+                                <field name="installment_type" />
+                                <field name="installment_ids" widget="many2many_tags" attrs="{'invisible': [('installment_type', '!=', 'multi')]}"/>
+                                <field name="discount_type" />
+                                <field name="discount" string="Discount Amount" attrs="{'invisible': [('discount_type', '!=', 'amount')]}" />
+                                <field name="discount" string="Discount %" attrs="{'invisible': [('discount_type', '!=', 'percentage')]}" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Internal Note" name="internal_note">
+                                <field name="note"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="discount_template_categories_tree_view">
+            <field name="name">discount.template.tree.view</field>
+            <field name="model">discount.template</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" readonly="1"/>
+                    <field name="discount_category_id" />
+                    <field name="installment_type" optional="show"/>
+                    <field name="installment_ids" widget="many2many_tags" optional="show"/>
+                    <field name="student_sequence_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="discount_type" optional="show"/>
+                    <field name="academic_year_id" optional="hide"/>
+                    <field name="level_ids" widget="many2many_tags" optional="show"/>
+                    <field name="discount"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="school_discount_template" model="ir.actions.act_window">
+            <field name="name">Discount Categories</field>
+            <field name="res_model">discount.template</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No discount Template Rules found. Let's create one!
+                </p>
+                <p>
+                    Discount Template can be applied on students.
+                </p>
+            </field>
+        </record>
+
+
+        <menuitem name="Discount Templates" action="school_discount_template" id="menu_discount_template"
+                  parent="school_management.menu_discount_category_parent"/>
+
+    </data>
+</odoo>

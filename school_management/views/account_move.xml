@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_account_move_student_inherit" model="ir.ui.view">
+        <field name="name">Account Move Student(form)</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@id='other_tab']" position="after">
+                <page string="Student Information">
+                    <group>
+                        <group>
+                            <field name="academic_year_id"/>
+                            <field name="level_id"/>
+                            <field name="stage_id"/>
+                            <field name="class_id"/>
+                        </group>
+                        <group>
+                            <field name="national_id_iqama"/>
+                            <field name="student_sequence_id"/>
+                            <field name="guardian_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+            <xpath expr="//field[@name='partner_shipping_id']" position="before">
+                <field name="has_fees_plan"/>
+                <field name="fees_plan_id" attrs="{'readonly':[('has_fees_plan','=',True)]}"/>
+                <field name="discount_ids" widget="many2many_tags"/>
+                <group>
+                    <field name="installment_ids" widget="many2many_tags"/>
+                    <button name="onchange_invoice_fees_plan_id" type="object" class="btn btn-primary" string="Compute"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='name']" position="after">
+                <field name="installment_id"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    </data>
+</odoo>

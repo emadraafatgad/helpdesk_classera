@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_school_level_form" model="ir.ui.view">
+            <field name="name">school.level.form</field>
+            <field name="model">school.level</field>
+            <field name="arch" type="xml">
+                <form string="Levels">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="classera_id"/>
+                            </group>
+                            <group>
+                                <field name="from_age"/>
+                                <field name="to_age"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="stage_id"/>
+                            <field name="branch_id"/>
+                            <field name="company_id" invisible="0"/>
+                        </group>
+                    </sheet>
+                    <!-- Chatter -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_school_level_list" model="ir.ui.view">
+            <field name="name">school.level.list</field>
+            <field name="model">school.level</field>
+            <field name="arch" type="xml">
+                <tree create="1" delete="1" multi_edit="1" string="Levels">
+                    <field name="name"/>
+                    <field name="stage_id"/>
+                    <field name="branch_id"/>
+                    <field name="from_age"/>
+                    <field name="to_age"/>
+                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                    <field name="classera_id"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_school_level_search" model="ir.ui.view">
+            <field name="name">school.level.search</field>
+            <field name="model">school.level</field>
+            <field name="arch" type="xml">
+                <search string="Levels">
+                    <field name="name" filter_domain="[('name','ilike',self)]"
+                           string="Levels"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_school_level_form" model="ir.actions.act_window">
+            <field name="name">Levels</field>
+            <field name="res_model">school.level</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_school_level_search"/>
+            <field name="view_id" ref="view_school_level_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new School level
+                </p>
+                <p>
+                    An School Levels if base of all modules .to disclose a certain amount of information.
+                </p>
+            </field>
+        </record>
+
+
+
+        <menuitem name="Levels" action="action_school_level_form" id="menu_school_level"
+                  parent="school_management.menu_school_hierarchy"/>
+
+    </data>
+</odoo>

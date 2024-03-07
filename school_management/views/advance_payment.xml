@@ -1,0 +1,129 @@
+<odoo>
+    <record id="sequence_advanced_seq" model="ir.sequence">
+        <field name="name">Advance Payment sequence</field>
+        <field name="code">advance.payment</field>
+        <field name="prefix">ADV/%(year)s/</field>
+        <field name="padding">4</field>
+        <field eval="False" name="company_id"/>
+    </record>
+    <record id="view_school_advance_payment_form" model="ir.ui.view">
+        <field name="name">advance.payment.form</field>
+        <field name="model">advance.payment</field>
+        <field name="arch" type="xml">
+            <form string="Fees Payment">
+                <header>
+                    <button name="create_invoice_for_advanced" string="Create Invoice" type="object" states="draft"
+                            class="btn-primary"
+                            help="Create advance Payment invoice"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,posted"/>
+                </header>
+                <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button class="oe_stat_button" type="object"
+                                name="open_invoice_advanced_payment" icon="fa-book" string="Journal Entries"/>
+                    </div>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="e.g. Advanced Invoices"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="student_id"/>
+                             <field name="academic_year_id"/>
+                            <field name="level_id"/>
+                            <field name="stage_id"/>
+                            <field name="branch_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="journal_id"/>
+                            <field name="total_amount"/>
+                            <field name="company_id"  groups="base.group_multi_company" invisible="0" readonly="1"/>
+                            <field name="invoice_id"/>
+                        </group>
+                        <group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Advance Line">
+                            <field name="advance_line_ids">
+                                <tree editable="top">
+                                    <field name="product_id"/>
+                                    <field name="amount"/>
+                                    <field name="tax_ids" widget="many2many_tags"/>
+                                    <field name="subtotal"/>
+                                    <field name="total_amount"/>
+                                    <field name="company_id" options="{'no_create': True}"
+                                           groups="base.group_multi_company"/>
+                                </tree>
+                                <form>
+                                    <field name="product_id"/>
+                                    <field name="amount"/>
+                                    <field name="tax_ids" widget="many2many_tags"/>
+                                    <field name="subtotal"/>
+                                    <field name="total_amount"/>
+                                    <field name="company_id" options="{'no_create': True}"
+                                           groups="base.group_multi_company"/>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <!-- Chatter -->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" groups="base.group_user"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="view_school_advance_payment_list" model="ir.ui.view">
+        <field name="name">advance.payment.list</field>
+        <field name="model">advance.payment</field>
+        <field name="arch" type="xml">
+            <tree create="1" delete="1" multi_edit="1" string="Fees Plan">
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="date"/>
+                <field name="stage_id"/>
+                <field name="level_id"/>
+                <field name="academic_year_id"/>
+                <field name="total_amount" sum="Total"/>
+                <field name="branch_id"/>
+                <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_school_advance_payment_search" model="ir.ui.view">
+        <field name="name">school.fees.plan.search</field>
+        <field name="model">advance.payment</field>
+        <field name="arch" type="xml">
+            <search string="Fees Plan">
+                <field name="name" filter_domain="[('name','ilike',self)]" string="Sequence"/>
+                <field name="student_id" string="Student"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_school_advance_payment_form" model="ir.actions.act_window">
+        <field name="name">Fees Payment</field>
+        <field name="res_model">advance.payment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_school_advance_payment_list"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new School Fees Payment
+            </p>
+            <p>
+                An School Fees Payment Plan if base of all modules.
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Advance Payment" action="action_school_advance_payment_form" id="menu_school_advance_payment"
+              parent="school_management.school_management_root"/>
+</odoo>

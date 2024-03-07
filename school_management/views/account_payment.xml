@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_account_payment_student_inherit" model="ir.ui.view">
+            <field name="name">Account Move Student(form)</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Student Information">
+                            <group>
+                                <group>
+                                    <field name="academic_year_id"/>
+                                    <field name="level_id"/>
+                                    <field name="stage_id"/>
+                                    <field name="class_id"/>
+                                </group>
+                                <group>
+                                    <field name="national_id_iqama"/>
+                                    <field name="student_sequence_id"/>
+                                    <field name="guardian_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

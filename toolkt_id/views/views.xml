@@ -1,0 +1,153 @@
+<odoo>
+    <data>
+        <!-- FORM VIEW -->
+        <record id="toolkit_id_sheet_form_view" model="ir.ui.view">
+            <field name="name">tookit.id.sheet.form</field>
+            <field name="model">tookit.id.sheet</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Employee Information Sheet">
+                    <sheet>
+                        <separator string="Personal Information"/>
+                        <group>
+                            <div>
+                                <div>
+                                    <field name="user_id" invisible="1"/>
+                                    <field name="active" invisible="1"/>
+                                </div>
+                                <label for="lastname" />
+                                <h2><field name="lastname" nolabel="1"/></h2>
+                                <label for="firstname" />
+                                <h2><field name="firstname" nolabel="1"/></h2>
+                                <label for="middlename" />
+                                <h2><field name="middlename" nolabel="1"/></h2>
+                                <div>
+                                <label for="suffix" />
+                                <field name="suffix" widget="radio" options="{'horizontal': true}"/>
+                            </div>
+                            </div>
+                            <div>
+                                 <field name="employee_image" widget="image" style="width:300px; height:300px"/>
+                            </div>
+                             <!-- <div>
+                                 <field name="image" widget="image"/>
+                            </div> -->
+                        </group>
+
+                        <group>
+                            <div>
+                                <label for="address" />
+                                <h2><field name="address" nolabel="1"/></h2>
+                            </div>
+                        </group>
+
+                        <group>
+                            <div>
+                                <label for="position" />
+                                <h2><field name="position" nolabel="1" class="oe_inline"/></h2>
+                            </div>
+                            <div>
+                                <label for="id_number" />
+                                <h2><field name="id_number" nolabel="1" class="oe_inline"/></h2>
+                            </div>
+                            <div>
+                                <label for="tin" />
+                                <h2><field name="tin" nolabel="1" class="oe_inline"/></h2>
+                            </div>
+                            <div>
+                                <label for="email" />
+                                <h2><field name="email" nolabel="1" class="oe_inline"/></h2>
+                            </div>
+                            <div>
+                                <label for="mobile_number" />
+                                <h2><field name="mobile_number" nolabel="1" class="oe_inline"/></h2>
+                            </div>
+                            <div>
+                                <label for="date_of_birth" />
+                                <h2><field name="date_of_birth" nolabel="1" class="oe_inline"/></h2>
+                            </div>
+                            <div>
+                                <label for="gender" />
+                                <field name="gender" widget="radio" options="{'horizontal': true}"/>
+                            </div>
+                        </group>
+
+                         <group>
+                            <div>
+                                <label for="blood_type" />
+                                <field name="blood_type" widget="radio" options="{'horizontal': true}"/>
+                            </div>
+                        </group>
+
+                        <separator string="In case of Emergency"/>
+                        <group>
+                            <div>
+                                <label for="ecp_name" />
+                                <h2><field name="ecp_name" nolabel="1"/></h2>
+                            </div>
+                            <div>
+                                <label for="contact_number" />
+                                <h2><field name="contact_number" nolabel="1"/></h2>
+                            </div>
+                            <div>
+                                <label for="relation" />
+                                <h2><field name="relation" nolabel="1"/></h2>
+                            </div>
+                        </group>
+
+                        <group>
+                            <div>
+                                <label for="signature" />
+                                <field name="signature" widget="signature"/>
+                            </div>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- SEARCH -->
+        <record model="ir.ui.view" id="toolkit_id_sheet_search_view">
+            <field name="name">tookit.id.search.view"</field>
+            <field name="model">tookit.id.sheet</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="firstname"/>
+                    <field name="lastname"/>
+                    <field name="active"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- LIST VIEW -->
+        <record id="toolkit_id_sheet_tree_view" model="ir.ui.view">
+            <field name="name">tookit.id.sheet.tree</field>
+            <field name="model">tookit.id.sheet</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Employee Information Sheet">
+                    <field name="firstname"/>
+                    <field name="lastname"/>
+                    <field name="position"/>
+                    <field name="email"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_id_sheet">
+            <field name="name">Employee Information</field>
+            <field name="res_model">tookit.id.sheet</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+        </record>
+
+
+        <menuitem id="toolkt_id_menu" name="Employee ID" sequence="10" 
+            web_icon="toolkt_id,static/description/icon.png"
+            action="action_id_sheet"/>
+
+    </data>
+</odoo>

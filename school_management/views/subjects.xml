@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_school_subject_form" model="ir.ui.view">
+            <field name="name">school.subject.form</field>
+            <field name="model">school.subject</field>
+            <field name="arch" type="xml">
+                <form string="Subjects">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="classera_id"/>
+                            </group>
+                            <group>
+                                <field name="level_id"/>
+                                <field name="company_id" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <!-- Chatter -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_school_subject_list" model="ir.ui.view">
+            <field name="name">school.subject.list</field>
+            <field name="model">school.subject</field>
+            <field name="arch" type="xml">
+                <tree create="1" delete="1" multi_edit="1" string="Subjects">
+                    <field name="company_id" invisible="1"/>
+                    <field name="name"/>
+                    <field name="level_id"/>
+                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_school_subject_search" model="ir.ui.view">
+            <field name="name">school.subject.search</field>
+            <field name="model">school.subject</field>
+            <field name="arch" type="xml">
+                <search string="Subjects">
+                    <field name="name" filter_domain="[('name','ilike',self)]"
+                           string="Subjects"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_school_subject_form" model="ir.actions.act_window">
+            <field name="name">Subjects</field>
+            <field name="res_model">school.subject</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_school_subject_search"/>
+            <field name="view_id" ref="view_school_subject_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new School subject
+                </p>
+                <p>
+                    An School Subjects if base of all modules .to disclose a certain amount of information.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Subjects" action="action_school_subject_form" id="menu_school_subject"
+                  parent="school_management.menu_school_hierarchy"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,81 @@
+<odoo>
+
+    <record id="general_report_template_form" model="ir.ui.view">
+        <field name="name">general.report.template.form</field>
+        <field name="model">general.report.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="0"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="model_name_id"/>
+                        <field name="rec_model"/>
+                    </group>
+                    <notebook>
+                        <page string="Content">
+                            <field name="content"/>
+                        </page>
+                        <page string="Fields">
+                            <field name="field_fields_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="field_description"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Test">
+                            <group>
+                                <group>
+                                    <button name="compute_test_content" string="TEST" type="object" class="btn btn-primary" />
+                                </group>
+                                <group>
+                                    <field name="rec_id"/>
+                                </group>
+                                <group>
+                                </group>
+                                <field name="test_content"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+
+    </record>
+
+    <record id="general_report_template_tree" model="ir.ui.view">
+        <field name="name">general.report.template.tree</field>
+        <field name="model">general.report.template</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="form_tender_general_report_template_action" model="ir.actions.act_window">
+        <field name="name">Template Report</field>
+        <field name="res_model">general.report.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="menu_general_report_template_root"
+              name="Report Template"
+              parent="school_management.school_management_root"
+              sequence="100"
+    />
+    <menuitem id="menu_general_report_template"
+              name="Content Report"
+              parent="school_management.menu_general_report_template_root"
+              action="form_tender_general_report_template_action"
+              sequence="10"
+    />
+
+
+</odoo>

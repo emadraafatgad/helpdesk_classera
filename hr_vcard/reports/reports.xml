@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<!-- ID front-->
+        <record id="front_back_id_report" model="ir.actions.report">
+			<field name="name">Front/Back ID</field>
+			<field name="model">hr.employee.vcard</field>
+			<field name="report_name">hr_vcard.front_back</field>
+			<field name="attachment"></field>
+			<field name="print_report_name">(object._get_printed_report_name())</field>
+			<field name="pentaho_report_model_id" ref="hr_vcard.model_hr_employee_vcard"/>
+			<field name="pentaho_filename">hr_vcard/reports/front_back.prpt</field>
+			<field name="pentaho_report_output_type">pdf</field>
+			<field name="report_type">pentaho</field>
+			<field name="pentaho_load_file" eval="True"/>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_academic_year_form" model="ir.ui.view">
+            <field name="name">academic.year.form</field>
+            <field name="model">academic.year</field>
+            <field name="arch" type="xml">
+                <form string="Academic">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="classera_id"/>
+                            </group>
+                            <group>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="company_id" invisible="0"/>
+                            <field name="branch_id"/>
+                        </group>
+
+                    </sheet>
+                    <!-- Chatter -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_academic_year_list" model="ir.ui.view">
+            <field name="name">academic.year.list</field>
+            <field name="model">academic.year</field>
+            <field name="arch" type="xml">
+                <tree create="1" delete="1" multi_edit="1" string="Academic Years">
+                    <field name="company_id" invisible="1"/>
+                    <field name="name"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="branch_id"/>
+                    <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_academic_year_kanban" model="ir.ui.view">
+            <field name="name">academic.year.kanban</field>
+            <field name="model">academic.year</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>
+                                            <field name="name"/>
+                                        </strong>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <strong>Start date:</strong>
+                                    <t t-esc="record.start_date.value"/>
+                                </div>
+                                <div>
+                                    <strong>End date:</strong>
+                                    <t t-esc="record.end_date.value"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="view_academic_year_search" model="ir.ui.view">
+            <field name="name">academic.year.search</field>
+            <field name="model">academic.year</field>
+            <field name="arch" type="xml">
+                <search string="Academic">
+                    <field name="name" filter_domain="[('name','ilike',self)]"
+                           string="Academic year"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_academic_year_form" model="ir.actions.act_window">
+            <field name="name">Academic Year</field>
+            <field name="res_model">academic.year</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="view_academic_year_search"/>
+            <field name="view_id" ref="view_academic_year_list"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new academic year
+                </p>
+                <p>
+                    An academic year if base of all modules .to disclose a certain amount of information.
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="School Managment" id="school_management_root" groups="base.group_user" sequence="2"/>
+        <menuitem name="Configuration" id="school_management_config_root" parent="school_management_root"
+                  groups="base.group_user" sequence="200"/>
+        <menuitem name="Academic year" action="action_academic_year_form" id="menu_academic_year"
+                  parent="school_management.school_management_config_root"/>
+
+    </data>
+</odoo>

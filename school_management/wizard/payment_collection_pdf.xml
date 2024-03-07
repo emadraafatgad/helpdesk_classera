@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <data>
+        <!-- Report Template -->
+        <report
+                id="school_payment_collection_pdf_export"
+                model="customer.payment.report.wizard"
+                string="Payment Collection Report"
+                report_type="qweb-pdf"
+                name="school_management.payments_collection_report_template"
+                file="school_management.payments_collection_report_template"
+        />
+
+        <!-- Report Template Content -->
+        <template id="payments_collection_report_template">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <!-- Define the report content here -->
+                    <!-- Example: -->
+                    <div class="page">
+                        <h1>Payments Collection Report</h1>
+                        <p>Start Date:
+                            <t t-esc="date_from"/>
+                        </p>
+                        <p>End Date:
+                            <t t-esc="date_to"/>
+                        </p>
+                        <!-- Add your report content -->
+
+                        <table class="table table-sm">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th colspan="4">
+                                        <strong>Name</strong>
+                                    </th>
+                                    <th colspan="4">
+                                        <strong>Date</strong>
+                                    </th>
+                                    <th colspan="4">
+                                        <strong>Payment Method</strong>
+                                    </th>
+                                    <th colspan="4">
+                                        <strong>Amount</strong>
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="payments" t-as="payment">
+                                    <tr>
+                                        <td>
+                                            <t t-esc="payment.partner_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="payment.amount"/>
+                                        </td>
+                                        <!-- Display other payment details -->
+                                    </tr>
+                                </t>
+                                <!--                                <tr t-foreach="payments" t-as="line">-->
+
+                                <!--                                    <td>-->
+                                <!--                                        <t t-esc="line"/>-->
+                                <!--                                    </td>-->
+                                <!--                                    &lt;!&ndash;                                                                <td>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                    <t t-esc="line.partner_id.name"/>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                </td>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                <td>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                    <t t-esc="line.date"/>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                </td>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                <td>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                    <t t-esc="line.journal_id.name"/>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                </td>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                <td>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                    <t t-esc="line.amount"/>&ndash;&gt;-->
+                                <!--                                    &lt;!&ndash;                                                                </td>&ndash;&gt;-->
+                                <!--                                </tr>-->
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+            <!--            </t>-->
+        </template>
+    </data>
+</odoo>

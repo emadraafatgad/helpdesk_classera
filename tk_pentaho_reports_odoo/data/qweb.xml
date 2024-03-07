@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="pentaho_web" name="pentaho qwebactionmanager" inherit_id="web.assets_backend">
+        <xpath expr="//script[contains(@src, '/web/static/src/js/chrome/action_manager_report.js')]" position="replace">
+            <script type="text/javascript" src="/tk_pentaho_reports_odoo/static/src/js/pentaho/tk_report_action_manager.js"/>
+            <script type="text/javascript" src="/tk_pentaho_reports_odoo/static/src/js/pentaho/qwebactionmanager.js"/>
+        </xpath>
+    </template>
+
+    <template id="pentaho_web_2" name="pentaho action_manager" inherit_id="web.assets_backend">
+        <xpath expr="//script[contains(@src, '/web/static/src/js/chrome/action_manager.js')]" position="replace">
+            <script type="text/javascript" src="/tk_pentaho_reports_odoo/static/src/js/pentaho/tk_action_manager.js"/>
+        </xpath>
+    </template>
+</odoo>

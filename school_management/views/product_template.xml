@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product Template -->
+    <record id="view_product_template_is_fees_form_inherit" model="ir.ui.view">
+        <field name="name">Product Template (form)</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position="before">
+                <span class="d-inline-block">
+                    <field name="is_fees"/>
+                    <label for="is_fees"/>
+                </span>
+            </xpath>
+            <xpath position="after" expr="//field[@name='detailed_type']">
+                <field name="level_ids" widget="many2many_tags"/>
+                <field name="discount_allowed"/>
+            </xpath>
+            <xpath position="after" expr="//field[@name='property_account_income_id']">
+                <field name="advance_account_id"/>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

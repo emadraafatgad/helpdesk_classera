@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="customer_payment_report_wizard_view" model="ir.ui.view">
+        <field name="name">customer.payment.report.wizard</field>
+        <field name="model">customer.payment.report.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date_from"/>
+                        </group>
+                        <group>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+
+                </sheet>
+                <footer>
+                    <button string='Print excel' name="print_report_excel" type="object" class="btn-primary"/>
+<!--                    <button string='Print PDF' name="print_report_pdf" type="object" class="btn-primary"/>-->
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="school_payment_collection_xls_export" model="ir.actions.report">
+        <field name="name">Payment Collection XLS report</field>
+        <field name="model">customer.payment.report.wizard</field>
+        <field name="type">ir.actions.report</field>
+        <field name="report_name">school_management.customer_payment_report_xlsx</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_file">school_management.customer_payment_report_xlsx</field>
+    </record>
+
+    <record id="action_customer_payment_report" model="ir.actions.act_window">
+        <field name="name">Customer Payment Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">customer.payment.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="school_management.customer_payment_report_wizard_view"/>
+        <field name="target">new</field>
+    </record>
+    <menuitem id="menu_school_management_reports_root"
+              name="School Reports"
+              parent="school_management.school_management_root"/>
+    <menuitem id="menu_customer_payment_report"
+              name="Customer Payment Report" sequence="50"
+              action="action_customer_payment_report"
+              parent="school_management.menu_school_management_reports_root"/>
+</odoo>

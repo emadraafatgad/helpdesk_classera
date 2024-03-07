@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_product_discount_form_view" model="ir.ui.view">
+            <field name="name">product.product.discount.form</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <form string="Expense Categories">
+                    <sheet>
+                        <widget name="web_ribbon" title="Archived" bg_color="bg-danger"
+                                attrs="{'invisible': [('active', '=', True)]}"/>
+                        <field name='product_variant_count' invisible='1'/>
+                        <field name="id" invisible="True"/>
+                        <field name="image_1920" widget="image" class="oe_avatar"
+                               options="{'image_preview': 'image_128'}"/>
+                        <field name="detailed_type" invisible="1"/>
+                        <div class="oe_title">
+                            <label for="name" string="Discount Name"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. discount"/>
+                            </h1>
+                            <div name="options" groups="base.group_user" invisible="1">
+                                <div>
+                                    <field name="is_discount"/>
+                                    <label for="is_discount"/>
+                                </div>
+                            </div>
+                        </div>
+                        <group name="product_details">
+                            <group string="General Information">
+                                <field name="active" invisible="1"/>
+                                <field name="type" invisible="1"/>
+                                <field name="detailed_type" invisible="1"/>
+                                <field name="level_ids" widget="many2many_tags"/>
+                                <field name="allowed_users_ids" widget="many2many_tags"/>
+                                <field name="applied_fees_items_ids" widget="many2many_tags"/>
+                                <label for="default_code"/>
+                                <div>
+                                    <field name="default_code"/>
+                                </div>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                            </group>
+                            <group string="Accounting">
+                                <field name="property_account_expense_id" groups="account.group_account_readonly"/>
+                                <field name="property_account_income_id" groups="account.group_account_readonly"/>
+                                <field name="supplier_taxes_id" widget="many2many_tags"
+                                       context="{'default_type_tax_use':'purchase', 'default_price_include': 1}"
+                                       options="{'no_quick_create': True}"/>
+                                <field name="taxes_id" widget="many2many_tags"
+                                       context="{'default_type_tax_use':'sale', 'default_price_include': 1}"
+                                       options="{'no_quick_create': True}"/>
+                            </group>
+                        </group>
+                        <group name="is_default_discount">
+                            <group string="Default">
+                                <field name="is_default_discount"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Internal Note" name="internal_note">
+                                <field name="description"
+                                       placeholder="This note will be shown to users when they select this expense product."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="product_product_discount_categories_tree_view">
+            <field name="name">product.product.expense.categories.tree.view</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <tree class="o_expense_categories">
+                    <field name="name" readonly="1"/>
+                    <field name="default_code" optional="show" readonly="1"/>
+                    <field name="description" widget="html" string="Internal Note" optional="show" readonly="1"/>
+                    <field name="level_ids" widget="many2many_tags" optional="show"/>
+                    <field name="allowed_users_ids" widget="many2many_tags" optional="show"/>
+                    <field name="supplier_taxes_id" widget="many2many_tags" optional="show"/>
+                    <field name="taxes_id" widget="many2many_tags" optional="show"/>
+                    <field name="is_default_discount" optional="show"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="school_discount_product" model="ir.actions.act_window">
+            <field name="name">Discount Categories</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="search_view_id" ref="product.product_search_form_view"/>
+            <field name="context">{"default_is_discount": 1, 'default_detailed_type': 'service'}</field>
+            <field name="domain">[('is_discount', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No discount categories found. Let's create one!
+                </p>
+                <p>
+                    Discount categories can be reinvoiced to your customers.
+                </p>
+            </field>
+        </record>
+
+        <record id="school_discount_product_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="product_product_discount_categories_tree_view"/>
+            <field name="act_window_id" ref="school_discount_product"/>
+        </record>
+
+        <record id="school_discount_product_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="3"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="product_product_discount_form_view"/>
+            <field name="act_window_id" ref="school_discount_product"/>
+        </record>
+
+
+        <menuitem name="Discounts" id="menu_discount_category_parent"
+                  parent="school_management.school_management_config_root"/>
+        <menuitem name="Discount Category" action="school_discount_product" id="menu_discount_category"
+                  parent="school_management.menu_discount_category_parent"/>
+
+    </data>
+</odoo>
