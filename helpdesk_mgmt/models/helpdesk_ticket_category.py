@@ -20,3 +20,5 @@ class HelpdeskCategory(models.Model):
         string="Company",
         default=lambda self: self.env.company,
     )
+
+    direct_manager_approval = fields.Boolean()

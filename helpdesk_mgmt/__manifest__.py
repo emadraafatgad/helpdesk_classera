@@ -32,6 +32,8 @@
         "views/helpdesk_ticket_tag_views.xml",
         "views/helpdesk_ticket_views.xml",
         "views/helpdesk_dashboard_views.xml",
+        "views/inherit_tichet.xml",
+        "views/ticket_sla.xml",
     ],
     "demo": ["demo/helpdesk_demo.xml"],
     "development_status": "Beta",

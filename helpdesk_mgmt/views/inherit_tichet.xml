@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_helpdesk_ticket_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.inherit.sla</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='channel_id']" position="after">
+                <field name="sla_id"/>
+                <field name="direct_manager_approval"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="related_employee_id"/>
+                <field name="manager_id"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="state"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button name="action_set_in_progress" icon="fa-play-circle text-success" type="object" string="Start Work" states="new,on_hold" groups="group_helpdesk_manager"/>
+                <button name="action_set_on_hold" type="object" string="Set On Hold" states="in_progress" groups="group_helpdesk_manager"/>
+                <button name="action_set_closed" type="object" string="Set Closed" states="in_progress,on_hold" groups="group_helpdesk_manager"/>
+                <button name="action_resolve_ticket" type="object" string="Resolve Work" icon="fa-stop-circle text-warning"  states="in_progress" groups="group_helpdesk_manager"/>
+                <button name="manager_approval_to_complete" type="object" string="Approve" icon="fa-play-circle text-warning"  states="on_hold"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

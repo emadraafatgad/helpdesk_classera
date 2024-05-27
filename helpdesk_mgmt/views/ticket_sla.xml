@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree View for Ticket SLA -->
+    <record id="view_ticket_sla_tree" model="ir.ui.view">
+        <field name="name">ticket.sla.tree</field>
+        <field name="model">ticket.sla</field>
+        <field name="arch" type="xml">
+            <tree string="Ticket SLAs">
+                <field name="name"/>
+                <field name="time"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View for Ticket SLA -->
+    <record id="view_ticket_sla_form" model="ir.ui.view">
+        <field name="name">ticket.sla.form</field>
+        <field name="model">ticket.sla</field>
+        <field name="arch" type="xml">
+            <form string="Ticket SLA">
+                <group>
+                    <field name="name"/>
+                    <field name="time"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Ticket SLA -->
+    <record id="action_ticket_sla" model="ir.actions.act_window">
+        <field name="name">Ticket SLAs</field>
+        <field name="res_model">ticket.sla</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_ticket_sla_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first SLA
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Ticket SLA -->
+    <menuitem id="menu_ticket_sla"
+              name="SLAs"
+              parent="helpdesk_mgmt.helpdesk_ticket_config_main_menu"
+              action="action_ticket_sla"
+              sequence="10"/>
+</odoo>

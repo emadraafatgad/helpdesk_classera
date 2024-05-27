@@ -138,13 +138,13 @@ class HrCustody(models.Model):
     employee = fields.Many2one('hr.employee', string='Employee', required=True, readonly=True, help="Employee",
                                default=lambda self: self.env.user.employee_id.id,
                                states={'draft': [('readonly', False)]})
-    purpose = fields.Char(string='Reason', track_visibility='always', required=True, readonly=True, help="Reason",
+    purpose = fields.Char(string='Reason', track_visibility='always', required=False, readonly=True, help="Reason",
                           states={'draft': [('readonly', False)]})
     custody_name = fields.Many2one('custody.property', string='Property', required=True, readonly=True,
                                    help="Property name",
                                    states={'draft': [('readonly', False)]}
                                    )
-    return_date = fields.Date(string='Return Date', required=True, track_visibility='always', readonly=True,
+    return_date = fields.Date(string='Return Date', required=False, track_visibility='always', readonly=True,
                               help="Return date",
                               states={'draft': [('readonly', False)]})
     renew_date = fields.Date(string='Renewal Return Date', track_visibility='always',

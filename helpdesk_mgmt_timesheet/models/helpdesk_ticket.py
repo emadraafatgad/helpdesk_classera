@@ -2,7 +2,7 @@
 # For copyright and license notices, see __manifest__.py file in root directory
 ###############################################################################
 from odoo import api, fields, models
-
+from datetime import datetime
 
 class HelpdeskTicket(models.Model):
     _name = "helpdesk.ticket"
@@ -17,6 +17,11 @@ class HelpdeskTicket(models.Model):
         related="team_id.allow_timesheet",
     )
     planned_hours = fields.Float(tracking=True)
+
+    @api.onchange('sla_id')
+    def get_planned_hours(self):
+        if self.sla_id:
+            self.planned_hours = self.sla_id.time
     progress = fields.Float(
         compute="_compute_progress_hours",
         group_operator="avg",
@@ -101,3 +106,41 @@ class HelpdeskTicket(models.Model):
             }
         )
         return result
+
+    # timesheet_ids = fields.One2many('account.analytic.line', 'ticket_id', string='Timesheet Entries')
+    total_work_duration = fields.Float(string='Total Work Duration (Hours)', compute='_compute_total_work_duration')
+
+    @api.depends('timesheet_ids.unit_amount')
+    def _compute_total_work_duration(self):
+        for ticket in self:
+            ticket.total_work_duration = sum(timesheet.unit_amount for timesheet in ticket.timesheet_ids)
+
+    def action_start_work(self):
+        self.ensure_one()
+        self.timesheet_ids.create({
+            'ticket_id': self.id,
+            'unit_amount': 0,
+            'name': 'Work Started {}'.format(self.name),
+            'user_id': self.env.user.id,
+            'date': fields.datetime.today(),
+            'project_id': self.project_id.id,
+            'task_id': self.id,
+        })
+
+    def action_end_work(self):
+        self.ensure_one()
+        active_timesheets = self.timesheet_ids.filtered(lambda ts: not ts.unit_amount)
+        if active_timesheets:
+            active_timesheets[0].button_end_work()
+
+
+    def action_set_closed(self):
+        self.write({'state': 'closed','timer_end':datetime.now()})
+
+    def action_set_in_progress(self):
+        self.action_start_work()
+        self.write({'state': 'in_progress', 'timer_start': datetime.now()})
+
+    def action_resolve_ticket(self):
+        self.action_end_work()
+        self.write({'state': 'resolved','timer_end':datetime.now()})
