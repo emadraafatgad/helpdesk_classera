@@ -117,7 +117,17 @@ class HelpdeskTicket(models.Model):
         help="Gives the sequence order when displaying a list of tickets.",
     )
     active = fields.Boolean(default=True)
-
+    resolution_type = fields.Selection([
+            ("approval", "Approval Needed"),
+            ("purchase", "Purchase Needed"),
+            ("duplicate", "Duplicate"),
+            ("completed", "Completed"),
+            ("fixed", "Fixed"),
+            ("out", "Out Of Scope"),
+            ("referred", "Referred"),
+            ("other", "Other"),
+        ])
+    to_approve_manager = fields.Many2one('hr.employee',domain=[('user_id','!=',False)])
     def name_get(self):
         res = []
         for rec in self:

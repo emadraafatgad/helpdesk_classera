@@ -16,6 +16,13 @@ class HelpdeskTicketStage(models.Model):
         help="Display button in portal ticket form to allow closing ticket "
         "with this stage as target."
     )
+    state = fields.Selection([
+        ('new', 'New'),
+        ('in_progress', 'In Progress'),
+        ('on_hold', 'On Hold'),
+        ('resolved', 'Resolved'),
+        ('closed', 'Closed')
+    ], string='State', default='new', tracking=True)
     mail_template_id = fields.Many2one(
         comodel_name="mail.template",
         string="Email Template",

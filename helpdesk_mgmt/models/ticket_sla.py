@@ -1,5 +1,6 @@
-from odoo import models, fields,api
 from datetime import datetime
+
+from odoo import models, fields, api,_
 from odoo.exceptions import ValidationError
 
 
@@ -9,7 +10,6 @@ class TicketSLA(models.Model):
 
     name = fields.Char(string='SLA Name', required=True)
     time = fields.Float(string='SLA Time', required=True)
-
 
 
 class HelpdeskTicket(models.Model):
@@ -27,7 +27,7 @@ class HelpdeskTicket(models.Model):
         ('on_hold', 'On Hold'),
         ('resolved', 'Resolved'),
         ('closed', 'Closed')
-    ], string='State', default='new',tracking=True)
+    ], string='State', default='new', tracking=True)
 
     @api.depends('partner_id')
     def _compute_related_employee(self):
@@ -55,22 +55,55 @@ class HelpdeskTicket(models.Model):
 
     def manager_approval_to_complete(self):
         print(self.env.user)
+        self._compute_related_employee()
+        print(self.sudo().manager_id)
+        print(self.manager_id.user_id)
+        if not self.manager_id.user_id == self.env.user:
+            raise ValidationError("You are not the Manager")
+        self.action_set_in_progress()
+
+    def manager_reject_request(self):
+        print(self.env.user)
         print(self.manager_id.user_id)
         if not self.manager_id.user_id == self.env.user:
             raise ValidationError("You are not the Manager")
         self.state = 'in_progress'
 
-    def action_set_on_hold(self):
-        self.write({'state': 'on_hold' })
+    def action_request_approve(self):
+        self.message_post(
+            body=_("Please Approve (%s) .") % (self.name),
+            partner_ids=self.manager_id.user_id.partner_id.id,
+            subtype_id=self.env.ref('mail.mt_note').id,
+            email_layout_xmlid='mail.mail_notification_light')
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'on_hold')], limit=1)
+        if stage:
+            self.write({'state': 'on_hold', 'stage_id': stage.id})
+        else:
+            self.write({'state': 'on_hold'})
 
     def action_set_closed(self):
         self.write({'state': 'closed'})
 
+    def action_set_on_hold(self):
+        pass
+
     def action_set_in_progress(self):
-        self.write({'state': 'in_progress', 'timer_start': datetime.now()})
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'in_progress')], limit=1)
+        if stage:
+            self.write({'state': 'in_progress', 'stage_id': stage.id, 'timer_start': datetime.now()})
+        else:
+            self.write({'state': 'in_progress', 'timer_start': datetime.now()})
 
     def action_resolve_ticket(self):
-        self.write({'state': 'resolved'})
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'resolved')], limit=1)
+        if stage:
+            self.write({'state': 'resolved', 'stage_id': stage.id, })
+        else:
+            self.write({'state': 'resolved' })
 
-    def action_clone_ticket(self):
-        self.write({'state': 'resolved'})
+    def action_close_ticket(self):
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'closed')], limit=1)
+        if stage:
+            self.write({'state': 'closed', 'stage_id': stage.id,})
+        else:
+            self.write({'state': 'closed'})

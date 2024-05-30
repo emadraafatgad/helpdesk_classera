@@ -51,6 +51,7 @@
                         <group name="main_left">
                             <field name="sequence" />
                             <field name="mail_template_id" />
+                            <field name="state" />
                             <field name="team_ids" widget="many2many_tags" />
                             <field
                                 name="company_id"

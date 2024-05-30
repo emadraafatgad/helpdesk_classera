@@ -139,8 +139,32 @@ class HelpdeskTicket(models.Model):
 
     def action_set_in_progress(self):
         self.action_start_work()
-        self.write({'state': 'in_progress', 'timer_start': datetime.now()})
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'in_progress')], limit=1)
+        if stage:
+            self.write({'state': 'in_progress', 'stage_id': stage.id, 'timer_start': datetime.now()})
+        else:
+            self.write({'state': 'in_progress', 'timer_start': datetime.now()})
 
     def action_resolve_ticket(self):
         self.action_end_work()
-        self.write({'state': 'resolved','timer_end':datetime.now()})
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'resolved')], limit=1)
+        if stage:
+            self.write({'state': 'resolved', 'stage_id': stage.id, })
+        else:
+            self.write({'state': 'resolved'})
+
+    def action_request_approve(self):
+        self.action_end_work()
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'on_hold')], limit=1)
+        if stage:
+            self.write({'state': 'on_hold', 'stage_id': stage.id})
+        else:
+            self.write({'state': 'on_hold'})
+
+    def action_close_ticket(self):
+        self.action_end_work()
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'closed')], limit=1)
+        if stage:
+            self.write({'state': 'closed', 'stage_id': stage.id,})
+        else:
+            self.write({'state': 'closed'})
