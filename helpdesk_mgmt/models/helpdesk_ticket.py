@@ -127,6 +127,7 @@ class HelpdeskTicket(models.Model):
             ("referred", "Referred"),
             ("other", "Other"),
         ])
+    note = fields.Char()
     to_approve_manager = fields.Many2one('hr.employee',domain=[('user_id','!=',False)])
     def name_get(self):
         res = []

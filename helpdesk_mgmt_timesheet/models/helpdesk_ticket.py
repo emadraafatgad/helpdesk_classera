@@ -117,15 +117,17 @@ class HelpdeskTicket(models.Model):
 
     def action_start_work(self):
         self.ensure_one()
-        self.timesheet_ids.create({
+        timesheet_vals = {
             'ticket_id': self.id,
             'unit_amount': 0,
             'name': 'Work Started {}'.format(self.name),
             'user_id': self.env.user.id,
             'date': fields.datetime.today(),
             'project_id': self.project_id.id,
-            'task_id': self.id,
-        })
+            'task_id': self.task_id.id,
+        }
+        print(timesheet_vals )
+        self.timesheet_ids.create(timesheet_vals)
 
     def action_end_work(self):
         self.ensure_one()

@@ -177,8 +177,9 @@
                         </group>
                         <group>
                             <field name="resolution_type"/>
+                            <field name="note"/>
                             <field name="partner_id" />
-                            <field name="partner_name" />
+                            <field name="partner_name" invisible="1"/>
                             <field name="partner_email" />
 
                             <field
@@ -224,7 +225,7 @@
                 <field name="number" decoration-bf="1" />
                 <field name="name" />
                 <field name="partner_id" optional="hide" widget="many2one_avatar" />
-                <field name="partner_name" optional="show" />
+                <field name="partner_name" optional="hide" />
                 <field name="user_id" optional="show" widget="many2one_avatar_user" />
                 <field name="unattended" invisible="1" />
                 <field name="closed" invisible="1" />
