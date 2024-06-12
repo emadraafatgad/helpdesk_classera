@@ -26,7 +26,7 @@ class HelpdeskTicket(models.Model):
         ('in_progress', 'In Progress'),
         ('on_hold', 'On Hold'),
         ('resolved', 'Resolved'),
-        ('closed', 'Closed')
+        # ('closed', 'Closed')
     ], string='State', default='new', tracking=True)
 
     @api.depends('partner_id')
@@ -52,22 +52,23 @@ class HelpdeskTicket(models.Model):
     timer_end = fields.Datetime(string='Timer End')
     timer_duration = fields.Float(string='Timer Duration', compute='_compute_timer_duration')
     direct_manager_approval = fields.Boolean(related='category_id.direct_manager_approval')
-
+    approved = fields.Boolean()
     def manager_approval_to_complete(self):
         print(self.env.user)
         self._compute_related_employee()
         print(self.sudo().manager_id)
         print(self.manager_id.user_id)
-        if not self.manager_id.user_id == self.env.user:
+        if not self.to_approve_manager.user_id == self.env.user:
             raise ValidationError("You are not the Manager")
-        self.action_set_in_progress()
+        self.approved = True
+        # self.action_set_in_progress()
 
     def manager_reject_request(self):
         print(self.env.user)
         print(self.manager_id.user_id)
         if not self.manager_id.user_id == self.env.user:
             raise ValidationError("You are not the Manager")
-        self.state = 'in_progress'
+        self.approved = True
 
     def action_request_approve(self):
         self.message_post(

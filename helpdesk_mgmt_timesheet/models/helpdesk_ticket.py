@@ -137,7 +137,12 @@ class HelpdeskTicket(models.Model):
 
 
     def action_set_closed(self):
-        self.write({'state': 'closed','timer_end':datetime.now()})
+        self.action_end_work()
+        stage = self.env['helpdesk.ticket.stage'].search([('state', '=', 'resolved')], limit=1)
+        if stage:
+            self.write({'state': 'resolved', 'stage_id': stage.id, })
+        else:
+            self.write({'state': 'resolved','timer_end':datetime.now()})
 
     def action_set_in_progress(self):
         self.action_start_work()

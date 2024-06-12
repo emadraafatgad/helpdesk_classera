@@ -10,20 +10,21 @@
                 <field name="direct_manager_approval"/>
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="related_employee_id"/>
-                <field name="manager_id"/>
+<!--                <field name="related_employee_id"/>-->
+<!--                <field name="manager_id"/>-->
                 <field name="to_approve_manager"/>
             </xpath>
             <xpath expr="//field[@name='partner_id']" position="before">
                 <field name="state"/>
             </xpath>
             <xpath expr="//header" position="inside">
-                <button name="action_set_in_progress" icon="fa-play-circle text-success" type="object" string="Start Work" states="new,on_hold" groups="helpdesk_mgmt.group_helpdesk_manager"/>
-                <button name="action_request_approve" type="object" string="Request Approve" states="in_progress" groups="helpdesk_mgmt.group_helpdesk_manager"/>
-                <button name="action_set_closed" type="object" string="Set Closed" states="in_progress,on_hold" groups="helpdesk_mgmt.group_helpdesk_manager"/>
-                <button name="action_resolve_ticket" type="object" string="Resolve Work" icon="fa-stop-circle text-warning"  states="in_progress" groups="helpdesk_mgmt.group_helpdesk_manager"/>
-                <button name="manager_approval_to_complete" type="object" string="Approve" class="btn btn-success" icon="fa-play-circle text-warning"  states="on_hold"/>
-                <button name="manager_reject_request" type="object" string="Reject" class="btn btn-danger" icon="fa-play-circle text-warning"  states="on_hold"/>
+                <button name="action_set_in_progress" icon="fa-play-circle text-success" type="object" string="Start Work" confirm="Are you sure you want to Start Work" states="new,on_hold" groups="helpdesk_mgmt.group_helpdesk_manager"/>
+                <button name="action_request_approve" type="object" string="Request Approve" confirm="Are you sure you want to Request Approval" states="in_progress" groups="helpdesk_mgmt.group_helpdesk_manager"/>
+<!--                <button name="action_set_closed" type="object" string="Set Closed" states="in_progress,on_hold" groups="helpdesk_mgmt.group_helpdesk_manager"/>-->
+                <button name="action_resolve_ticket" type="object" string="Resolve Work" confirm="Make Sure That You Added A Reason" icon="fa-stop-circle text-warning"  states="in_progress,in_progress" groups="helpdesk_mgmt.group_helpdesk_manager"/>
+                <field name="approved" invisible="1"/>
+                <button name="manager_approval_to_complete" type="object" string="Approve" confirm="Are you sure you want to Approve" class="btn btn-success" icon="fa-play-circle text-warning" attrs="{'invisible':['|',('state','!=','on_hold'),('approved','=',True)]}" />
+                <button name="manager_reject_request" type="object" string="Reject" confirm="Are you sure you want to Reject"  class="btn btn-warning" icon="fa-play-circle text-warning"  attrs="{'invisible':['|',('state','!=','on_hold'),('approved','=',True)]}"/>
             </xpath>
         </field>
     </record>

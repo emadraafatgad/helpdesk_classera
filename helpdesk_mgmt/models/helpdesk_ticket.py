@@ -127,6 +127,14 @@ class HelpdeskTicket(models.Model):
             ("referred", "Referred"),
             ("other", "Other"),
         ])
+    state = fields.Selection([
+        ('new', 'New'),
+        ('in_progress', 'In Progress'),
+        ('on_hold', 'On Hold'),
+        ('resolved', 'Resolved'),
+        # ('closed', 'Closed')
+    ], string='State', default='new', tracking=True)
+
     note = fields.Char()
     to_approve_manager = fields.Many2one('hr.employee',domain=[('user_id','!=',False)])
     def name_get(self):
@@ -158,7 +166,9 @@ class HelpdeskTicket(models.Model):
                 vals["number"] = self._prepare_ticket_number(vals)
             if vals.get("user_id") and not vals.get("assigned_date"):
                 vals["assigned_date"] = fields.Datetime.now()
-        return super().create(vals_list)
+        res = super().create(vals_list)
+        res._track_template({'stage_id'})
+        return res
 
     def copy(self, default=None):
         self.ensure_one()
@@ -202,8 +212,14 @@ class HelpdeskTicket(models.Model):
     # ---------------------------------------------------
 
     def _track_template(self, tracking):
+        print('tracking-----------------------')
+        print(type(tracking))
+        print(tracking)
         res = super()._track_template(tracking)
+        print(res)
         ticket = self[0]
+        print(ticket.stage_id.mail_template_id,"stage_id" in tracking )
+        print('stage_id')
         if "stage_id" in tracking and ticket.stage_id.mail_template_id:
             res["stage_id"] = (
                 ticket.stage_id.mail_template_id,
@@ -217,6 +233,7 @@ class HelpdeskTicket(models.Model):
                     "email_layout_xmlid": "mail.mail_notification_light",
                 },
             )
+            print(res)
         return res
 
     @api.model
